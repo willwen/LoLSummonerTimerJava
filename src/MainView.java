@@ -20,6 +20,8 @@ public class MainView {
 	private JPanel champ1;
 	private JPanel champ2;
 	private JPanel champ3;
+	private JPanel champ4;
+	private JPanel champ5;
 	private JMenuBar menuBar;
 	private JMenu menu, subMenu;
 	private JMenuItem menuItemSeconds;
@@ -33,7 +35,7 @@ public class MainView {
 		frame = new JFrame("LoL Timer");
 		frame.setJMenuBar(menuBar);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new MigLayout("", "[][grow]", "[][161.00,grow][][][grow]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[][grow]", "[][][][][grow]"));
 		frame.setVisible(true);
 		frame.setSize(1366, 768);
 
@@ -46,10 +48,11 @@ public class MainView {
 		champ3 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ3, "cell 1 2,grow");
 
-		// for future champion rows
-		// JPanel panel_1 = new JPanel();
-		// frame.getContentPane().add(panel_1, "cell 1 1,grow");
+		champ4 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		frame.getContentPane().add(champ4, "cell 1 3,grow");
 
+		champ5 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		frame.getContentPane().add(champ5, "cell 1 4,grow");
 		refreshFrame();
 	}
 

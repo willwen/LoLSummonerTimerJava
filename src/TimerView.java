@@ -76,7 +76,7 @@ public class TimerView {
 		panel.add(utilityButton);
 		
 		utilIconLabel = new JLabel("");
-		utilIconLabel.setIcon(new ImageIcon("summonerSpells\\Summoner's_Insight_mastery_s3.png"));
+		utilIconLabel.setIcon(new ImageIcon("spellResources\\Summoner's_Insight_mastery_s3.png"));
 		panel.add(utilIconLabel);
 
 		lblTime = new JLabel("Time Left");
@@ -108,7 +108,7 @@ public class TimerView {
 
 		flashIcon = new JLabel("");
 		flashIcon.setToolTipText(iconCopyright);
-		flashIcon.setIcon(new ImageIcon("summonerSpells\\Flash.png"));
+		flashIcon.setIcon(new ImageIcon("spellResources\\Flash.png"));
 		panel.add(flashIcon);
 
 		this.timerPres = timerPres;
@@ -169,7 +169,7 @@ public class TimerView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ImageIcon champIcon = new ImageIcon("champions\\" + championTextField.getText()
+					ImageIcon champIcon = new ImageIcon("championResources\\" + championTextField.getText()
 							+ "_Square_0.png");
 					if (champIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
 						champ1.setIcon(champIcon);
