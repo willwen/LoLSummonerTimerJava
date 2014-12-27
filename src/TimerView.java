@@ -34,7 +34,7 @@ import javax.swing.JTextField;
 public class TimerView {
 	private JTextField championTextField;
 	private JPanel panel;
-	private JLabel champ1;
+	private JLabel champLabel;
 	private JRadioButton utilityButton;
 	private JProgressBar progressBar;
 	private JButton btnResetTimer;
@@ -52,9 +52,9 @@ public class TimerView {
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		champ1 = new JLabel("Champ");
-		champ1.setToolTipText(iconCopyright);
-		panel.add(champ1);
+		champLabel = new JLabel("Champ " + timerPres.getId());
+		champLabel.setToolTipText(iconCopyright);
+		panel.add(champLabel);
 
 		champTextPanel = new JPanel();
 		champTextPanel.setSize(100, 100);
@@ -74,9 +74,10 @@ public class TimerView {
 
 		utilityButton = new JRadioButton("3 Points in Util");
 		panel.add(utilityButton);
-		
+
 		utilIconLabel = new JLabel("");
 		utilIconLabel.setIcon(new ImageIcon("spellResources\\Summoner's_Insight_mastery_s3.png"));
+		utilIconLabel.setToolTipText(iconCopyright);
 		panel.add(utilIconLabel);
 
 		lblTime = new JLabel("Time Left");
@@ -172,8 +173,9 @@ public class TimerView {
 					ImageIcon champIcon = new ImageIcon("championResources\\" + championTextField.getText()
 							+ "_Square_0.png");
 					if (champIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
-						champ1.setIcon(champIcon);
-						champ1.setText(championTextField.getText());
+						champLabel.setIcon(champIcon);
+						champLabel.setText(championTextField.getText());
+						timerPres.updateModelSound(championTextField.getText());
 						errorChampName.setVisible(false);
 					} else
 						throw new IllegalArgumentException("image not found");
@@ -182,8 +184,8 @@ public class TimerView {
 					errorChampName.setForeground(Color.RED);
 					errorChampName.setVisible(true);
 				} finally {
-					champ1.revalidate();
-					champ1.repaint();
+					champLabel.revalidate();
+					champLabel.repaint();
 				}
 			}
 		});
@@ -205,6 +207,9 @@ public class TimerView {
 		btnResetTimer.setEnabled(true);
 		utilityButton.setEnabled(false);
 		timerPres.getParentView().getSubMenu().setEnabled(false);
+		if(champLabel.getIcon()==null){
+			timerPres.updateModelSound("");
+		}
 	}
 	/**
 	 * Validate Fields when the reset button is pressed
@@ -224,19 +229,19 @@ public class TimerView {
 	 * Change flash cooldown in TimerModel with Utility
 	 */
 	private void changeFlashUtility() {
-		timerPres.getTimerModel().setFlashTimeMilliseconds((int) ((5 * 60 * 1000) * .90));
-		timerPres.getTimerModel().refreshFlashTimeSeconds();
+		timerPres.getTimerModel().setUtility(true);
+		timerPres.getTimerModel().finalizeTimers();
 		refreshProgressBarMax();
 		System.out.println("Successfully changed flash time to "
 				+ timerPres.getTimerModel().getFlashTimeSeconds());
 	}
-	
+
 	/**
 	 * Change flash cooldown in TimerModel without Utility
 	 */
 	private void changeFlashNoUtility() {
-		timerPres.getTimerModel().setFlashTimeMilliseconds((int) ((5 * 60 * 1000)));
-		timerPres.getTimerModel().refreshFlashTimeSeconds();
+		timerPres.getTimerModel().setUtility(false);
+		timerPres.getTimerModel().finalizeTimers();
 		refreshProgressBarMax();
 		System.out.println("Successfully changed flash time back to normal at"
 				+ timerPres.getTimerModel().getFlashTimeSeconds());
@@ -244,7 +249,7 @@ public class TimerView {
 	/**
 	 * refreshes the progressBar's Max Value
 	 */
-	private void refreshProgressBarMax(){
-		 progressBar.setMaximum(timerPres.getTimerModel().getFlashTimeSeconds());
+	private void refreshProgressBarMax() {
+		progressBar.setMaximum(timerPres.getTimerModel().getFlashTimeSeconds());
 	}
 }

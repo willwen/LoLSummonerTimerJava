@@ -12,6 +12,8 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.gtranslate.Language;
+
 /**
  * Presenter class does all the logistics for the TimerModel and Timer View.
  * 
@@ -20,6 +22,7 @@ import java.awt.event.ActionListener;
  */
 public class TimerPresenter implements ActionListener {
 
+	private int id;
 	private TimerView timerView;
 	private TimerModel timerModel;
 	private ActionListener progressBarAction;
@@ -31,7 +34,8 @@ public class TimerPresenter implements ActionListener {
 	 * 
 	 * @param timerView
 	 */
-	public TimerPresenter(MainView parentView) {
+	public TimerPresenter(MainView parentView, int id) {
+		this.id = id;
 		this.progressBarCounter = 0;
 		this.timerModel = new TimerModel(this);
 		this.timerView = new TimerView(this);
@@ -93,7 +97,7 @@ public class TimerPresenter implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		System.out.println("Flash is back up!");
 		this.timerModel.getFlashTimer().stop();
-
+		this.timerModel.getSoundThread().start();
 	}
 
 	public TimerModel getTimerModel() {
@@ -112,6 +116,13 @@ public class TimerPresenter implements ActionListener {
 	}
 	public MainView getParentView() {
 		return parentView;
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void updateModelSound(String championName){
+		timerModel.getTimerSound().updateSoundClip(championName);
 	}
 
 }

@@ -9,8 +9,13 @@
  *    Will Wen 
  *******************************************************************************/
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.Timer;
+
+import javazoom.jl.decoder.JavaLayerException;
+
 /**
  * The model for flash Timer.
  * @author Will Wen
@@ -18,18 +23,37 @@ import javax.swing.Timer;
  */
 public class TimerModel {
 	private Timer flashTimer;
-	private int flashTimeMilliseconds;
-	private int flashTimeSeconds;
+	private boolean isUtility;
+	//final value used in timer
+	private int finalFlashTimeMilliseconds;
+	private int finalFlashTimeSeconds;
+	
+	//backup values in case delay is swapped
+	private int backupFlashTimeNoUtilityMilliseconds;
+	private int backupFlashTimerUtilityMilliseconds;
+	
+	
 	private Timer timerIncrementer;
 	static final int progressBarIncrementerMilliseconds = 1000; // every second,
 																// update the
 																// progress bar
-
+	private TimerSound timerSound;
+	private TimerPresenter timerPres;
+	private Thread soundThread;
+	
 	public TimerModel(ActionListener presenter) {
-		flashTimeMilliseconds = 5 * 1000 * 60; // 5 minutes converted to
+		finalFlashTimeMilliseconds = 20 * 1000 ; // 5 minutes converted to
 												// milliseconds
-		flashTimeSeconds = flashTimeMilliseconds / 1000;
-		flashTimer = new Timer(flashTimeMilliseconds, presenter);
+		timerPres = (TimerPresenter) presenter;
+		timerSound = new TimerSound(this);
+		soundThread = new Thread (timerSound); 
+		//assert Values  based of final
+		refreshFlashTimeSeconds();
+		refreshFlashUtility();
+		refreshFlashNoUtility();
+		//default is no utility
+		isUtility = false;
+		flashTimer = new Timer(finalFlashTimeMilliseconds, presenter);
 		flashTimer.setRepeats(false);
 		timerIncrementer = new Timer(progressBarIncrementerMilliseconds, null);
 	}
@@ -47,22 +71,72 @@ public class TimerModel {
 	}
 
 	public int getFlashTimeMilliseconds() {
-		return flashTimeMilliseconds;
+		return finalFlashTimeMilliseconds;
 	}
 
 	public int getFlashTimeSeconds() {
-		return flashTimeSeconds;
+		return finalFlashTimeSeconds;
 	}
 
 	public void setFlashTimeMilliseconds(int flashTimeMilliseconds) {
-		this.flashTimeMilliseconds = flashTimeMilliseconds;
+		this.finalFlashTimeMilliseconds = flashTimeMilliseconds;
 	}
 
 	/**
 	 * recalculate flashTimeSeonds based off flashTimeMilliseconds
 	 */
 	public void refreshFlashTimeSeconds() {
-		this.flashTimeSeconds = flashTimeMilliseconds / 1000;;
+		this.finalFlashTimeSeconds = finalFlashTimeMilliseconds / 1000;;
 	}
+
+	/**
+	 * recalculate flashTimerUtilityMilliseconds based off flashTimeMilliseconds
+	 */
+	public void refreshFlashUtility() {
+		this.backupFlashTimerUtilityMilliseconds = (int) (finalFlashTimeMilliseconds * .9);
+	}
+
+	public void refreshFlashNoUtility() {
+		this.backupFlashTimeNoUtilityMilliseconds = finalFlashTimeMilliseconds;
+	}
+
+	public boolean isUtility() {
+		return isUtility;
+	}
+
+	public void setUtility(boolean isUtility) {
+		this.isUtility = isUtility;
+	}
+
+	public int getFlashTimerUtilityMilliseconds() {
+		return backupFlashTimerUtilityMilliseconds;
+	}
+
+	
+	
+	public void finalizeTimers(){
+		if (isUtility){
+			finalFlashTimeMilliseconds = backupFlashTimerUtilityMilliseconds;
+		}
+		else{
+			finalFlashTimeMilliseconds = backupFlashTimeNoUtilityMilliseconds;
+			}
+		refreshFlashTimeSeconds();
+		flashTimer.setInitialDelay(finalFlashTimeMilliseconds);
+		flashTimer.setDelay(finalFlashTimeMilliseconds);
+	}
+
+	public TimerPresenter getTimerPres() {
+		return timerPres;
+	}
+
+	public TimerSound getTimerSound() {
+		return timerSound;
+	}
+
+	public Thread getSoundThread() {
+		return soundThread;
+	}
+	
 
 }

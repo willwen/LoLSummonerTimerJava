@@ -5,9 +5,11 @@ Future Things To Do:
 - add additional slots for more champs
 - add timers for other summoner spells
 - add timers for meaningful ults
-- add option to select between seconds or min+seconds
 - add voice notifications
 - pause button
+-resizing fix
+--clarity of options
 - global hotkeys
-
+- not case sensitive champ name
+- set look and feel
 - drop down combo box for utility

@@ -27,10 +27,12 @@ public class MainView {
 	private JMenuItem menuItemSeconds;
 	private JMenuItem menuItemSecondsAndMinutes;
 	static boolean secondsOnly;
+	private int idCounter;
 
 	public MainView() {
 		//default is seconds only.
 		secondsOnly = true;
+		idCounter = 1;
 		constructMenu();
 		frame = new JFrame("LoL Timer");
 		frame.setJMenuBar(menuBar);
@@ -39,19 +41,19 @@ public class MainView {
 		frame.setVisible(true);
 		frame.setSize(1366, 768);
 
-		champ1 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		champ1 = new TimerPresenter(this, dispenseID()).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ1, "cell 1 0,grow");
 
-		champ2 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		champ2 = new TimerPresenter(this, dispenseID()).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ2, "cell 1 1,grow");
 
-		champ3 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		champ3 = new TimerPresenter(this, dispenseID()).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ3, "cell 1 2,grow");
 
-		champ4 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		champ4 = new TimerPresenter(this, dispenseID()).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ4, "cell 1 3,grow");
 
-		champ5 = new TimerPresenter(this).getTimerView().returnPanelToAdd();
+		champ5 = new TimerPresenter(this, dispenseID()).getTimerView().returnPanelToAdd();
 		frame.getContentPane().add(champ5, "cell 1 4,grow");
 		refreshFrame();
 	}
@@ -59,6 +61,12 @@ public class MainView {
 	public void refreshFrame() {
 		frame.revalidate();
 		frame.repaint();
+	}
+	
+	private int dispenseID(){
+		int returnID= idCounter;
+		idCounter ++ ;
+		return returnID;
 	}
 	
 	private void constructMenu(){
