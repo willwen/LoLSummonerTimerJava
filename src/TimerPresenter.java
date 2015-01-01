@@ -12,8 +12,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.gtranslate.Language;
-
 /**
  * Presenter class does all the logistics for the TimerModel and Timer View.
  * 
@@ -79,6 +77,7 @@ public class TimerPresenter implements ActionListener {
 	 */
 	public void startFlashTimer() {
 		this.timerModel.getFlashTimer().start();
+		getTimerModel().getTimerSound().soundAlarmStart();
 	}
 
 	/**

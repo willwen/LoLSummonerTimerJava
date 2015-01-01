@@ -1,0 +1,12 @@
+Credit.txt
+
+All Icons belong to Riot Games.
+
+This software uses
+Which are not written by me,
+
+Google Translate API:
+https://code.google.com/p/google-api-translate-java/
+
+JNativeHook:
+https://code.google.com/p/jnativehook/

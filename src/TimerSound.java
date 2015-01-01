@@ -9,7 +9,8 @@ import com.gtranslate.Language;
 
 public class TimerSound implements Runnable{
 	private Audio soundNotification;
-	private InputStream sound;
+	private InputStream soundStart;
+	private InputStream soundFinish;
 	private TimerModel timerModel;
 	
 	TimerSound(TimerModel timerModel){
@@ -25,20 +26,31 @@ public class TimerSound implements Runnable{
 	public void updateSoundClip(String championName){
 		try {
 			if (championName.equals("")){
-				sound  = soundNotification.getAudio("champion "+ timerModel.getTimerPres().getId() + " flash is back up.", Language.ENGLISH);
+				soundStart = soundNotification.getAudio("Started" + " champion "+ timerModel.getTimerPres().getId() + " Timer.", Language.ENGLISH);
+				soundFinish  = soundNotification.getAudio("champion "+ timerModel.getTimerPres().getId() + " flash is back up.", Language.ENGLISH);
 			}
 			else{
-				sound  = soundNotification.getAudio(championName + "'s flash is back up.", Language.ENGLISH);
+				soundStart = soundNotification.getAudio("Started "+ championName + " Timer.", Language.ENGLISH);
+				soundFinish  = soundNotification.getAudio(championName + "'s flash is back up.", Language.ENGLISH);
 			}
 		} catch (IOException e) {
 			System.out.println("Setting sound to Champion failed");
 		}
 		
 	}
-
-	public void soundAlarm(){
+	
+	public void soundAlarmStart(){
 		try {
-			soundNotification.play(sound);
+			soundNotification.play(soundStart);
+		} catch (JavaLayerException e) {
+			System.out.println("Sound play failed");
+			e.printStackTrace();
+		}
+	}
+	
+	public void soundAlarmFinish(){
+		try {
+			soundNotification.play(soundFinish);
 		} catch (JavaLayerException e) {
 			System.out.println("Sound play failed");
 			e.printStackTrace();
@@ -48,6 +60,6 @@ public class TimerSound implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		soundAlarm();
+		soundAlarmFinish();
 	}
 }

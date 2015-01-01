@@ -9,12 +9,7 @@
  *    Will Wen 
  *******************************************************************************/
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.swing.Timer;
-
-import javazoom.jl.decoder.JavaLayerException;
 
 /**
  * The model for flash Timer.
@@ -42,7 +37,7 @@ public class TimerModel {
 	private Thread soundThread;
 	
 	public TimerModel(ActionListener presenter) {
-		finalFlashTimeMilliseconds = 20 * 1000 ; // 5 minutes converted to
+		finalFlashTimeMilliseconds = 60 * 5 * 1000 ; // 5 minutes converted to
 												// milliseconds
 		timerPres = (TimerPresenter) presenter;
 		timerSound = new TimerSound(this);

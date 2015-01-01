@@ -10,6 +10,8 @@ Future Things To Do:
 -resizing fix
 --clarity of options
 - global hotkeys
+	-refactor mainView
+	-remove all excess console output
 - not case sensitive champ name
 - set look and feel
 - drop down combo box for utility

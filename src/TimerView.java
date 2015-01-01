@@ -252,4 +252,8 @@ public class TimerView {
 	private void refreshProgressBarMax() {
 		progressBar.setMaximum(timerPres.getTimerModel().getFlashTimeSeconds());
 	}
+	
+	public void pressStart(){
+		btnStartTimer.doClick();
+	}
 }
